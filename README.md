@@ -1,3 +1,1 @@
-Welcome to the official AEMBOT scouting app. 
-
-https://aembot.github.io/AEMScout/
+Potential updates to the AEMBot scouting app
