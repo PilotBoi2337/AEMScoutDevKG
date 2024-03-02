@@ -12,7 +12,7 @@ import droppedI from './assets/droppedI.png';
 import trapI from './assets/trapI.png';
 import climbI from './assets/climbI.png';
 import {QrReader} from 'react-qr-reader';
-
+let globalTeamNum = "";
 function App() {
 
   var lastUpdated = localStorage.getItem('lastUpdated');
@@ -480,7 +480,7 @@ function App() {
     }
     console.log(correctMatch);
     var matchAlliances = correctMatch.alliances;
-    var correctTeamNum;
+     var correctTeamNum;
     if(role[0] == "b") {
       correctTeamNum = matchAlliances.blue.team_keys[role[1] - 1];
     }
@@ -488,8 +488,7 @@ function App() {
       correctTeamNum = matchAlliances.red.team_keys[role[1] - 1];
     }
     var teamNum = correctTeamNum.substring(3);
-    console.log(teamNum);
-
+    globalTeamNum = teamNum
     document.getElementById('getRobotButton').classList.add('hidden');
     document.getElementById("startMessage").innerHTML = "You're scouting: <span id=teamNum>" + teamNum + "</span>";
     document.getElementById('nextPage1Button').classList.remove('hidden');
@@ -572,6 +571,10 @@ function App() {
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
     if(role[0] == "b") {
+      document.getElementById("robotNumber").innerHTML = "You're scouting robot: <span id=teamNum>" + globalTeamNum + "</span>";
+      document.getElementById("robotColor").innerHTML = "Alliance: Blue";
+      console.log(role)
+
       document.getElementById('redField').style.display = 'none';
       document.getElementById('blueField').style.display = 'block';
       document.getElementById('b1').classList.remove('redArr');
@@ -591,6 +594,10 @@ function App() {
       document.getElementById('start4').classList.add('blueArr');
     }
     else {
+      document.getElementById("robotNumber").innerHTML = "You're scouting robot: <span id=teamNum>" + globalTeamNum + "</span>";
+      console.log(role)
+      document.getElementById("robotColor").innerHTML = "Alliance: Red";
+
       document.getElementById('blueField').style.display = 'none';
       document.getElementById('redField').style.display = 'block';
       document.getElementById('b1').classList.remove('blueArr');
@@ -849,7 +856,7 @@ function App() {
     console.log(qrData);
     document.getElementById('page3').classList.remove('hidden');
     document.getElementById('page2').classList.add('hidden');
-
+  
     //if a note is brought to teleOp:
     if(heldNote && heldNote !="preload"){
       heldNote == null;
@@ -866,7 +873,14 @@ function App() {
       document.getElementById('droppedB').classList.remove('disabled');
       document.getElementById('trapB').classList.remove('disabled');
     }
-
+    if(role[0] == "b") {
+      console.log("yes!")
+      document.getElementById("robotNumber1").innerHTML = "You're scouting robot: <span id=teamNum>" + globalTeamNum + "</span>";
+      document.getElementById("robotColor1").innerHTML = "Alliance: Blue";}
+      else { 
+        console.log("No!")
+        document.getElementById("robotNumber1").innerHTML = "You're scouting robot: <span id=teamNum>" + globalTeamNum + "</span>";
+      document.getElementById("robotColor1").innerHTML = "Alliance: Red";}
     countTeleOp();
 
     localStorage.setItem('qrData2', qrData2);
@@ -1147,6 +1161,14 @@ function App() {
 
       <div class="page hidden page2" id="page2">
         {/* auto (map) mobilityInAuto automatically checks if game piece is pressed*/}
+        <div class="scoutInfo">
+          <h3 id = "robotNumber">
+         </h3>
+          <h3 id = "robotColor">
+
+          </h3>
+
+          </div>
         <div class="topButtons">
           <button class="back" onClick={() => lastPage1()}><p>&#8592;</p></button>
           <button id="startAuto" onClick={() => startAuto()}>start auto</button>
@@ -1176,6 +1198,14 @@ function App() {
 
       <div class="page hidden page3" id="page3">
         {/* teleop (speaker, amp, pickup, drop, trap, climb) */}
+        <div class="scoutInfo">
+          <h3 id = "robotNumber1">
+         </h3>
+          <h3 id = "robotColor1">
+
+          </h3>
+
+          </div>
         <div class="topButtons">
           <button class="back" onClick={() => lastPage2()}><p>&#8592;</p></button>
           <h3>TeleOp: <span id="scoredInTeleOp">0</span></h3>
